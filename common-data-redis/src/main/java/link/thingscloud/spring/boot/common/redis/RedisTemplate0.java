@@ -19,6 +19,7 @@ import java.util.concurrent.TimeUnit;
 @Component
 public class RedisTemplate0 extends AbstractRedisTemplate0 {
 
+    private static final int DEFAULT_TIMEOUT = 300_000;
     private static final String NS_LOCK = "link:thingscloud:redis:lock:";
 
     /**
@@ -28,7 +29,7 @@ public class RedisTemplate0 extends AbstractRedisTemplate0 {
      * @param callback a {@link link.thingscloud.spring.boot.common.redis.RedisResponseCallback} object.
      */
     public void lock(String key, RedisResponseCallback callback) {
-        lock(key, 300_000, callback);
+        lock(key, DEFAULT_TIMEOUT, callback);
     }
 
     /**
@@ -39,7 +40,13 @@ public class RedisTemplate0 extends AbstractRedisTemplate0 {
      * @param callback a {@link link.thingscloud.spring.boot.common.redis.RedisResponseCallback} object.
      */
     public void lock(String key, long timeout, RedisResponseCallback callback) {
-        Boolean lock = stringRedisTemplate.opsForValue().setIfAbsent(NS_LOCK + key, DateUtil.now(), timeout, TimeUnit.MILLISECONDS);
+        Boolean lock;
+        try {
+            lock = stringRedisTemplate.opsForValue().setIfAbsent(NS_LOCK + key, DateUtil.now(), timeout, TimeUnit.MILLISECONDS);
+        } catch (Exception e) {
+            callback.onException(e);
+            return;
+        }
         if (lock != null && lock) {
             try {
                 long start = System.currentTimeMillis();

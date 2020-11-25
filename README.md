@@ -7,6 +7,36 @@
 
 ## Using
 
+### common-data-redis
+
+#### 分布式锁
+
+    // 极端异常，如有严格要求，建议使用redisson
+    // 当主从同步时，锁成功，主挂了，从升为主时，锁key未同步过来，会导致第二次锁也会成功
+    @Autowired
+    private RedisTemplate0 redisTemplate0;
+    
+    redisTemplate0.lock("xxx", 2000, new RedisResponseCallback() {
+       
+        @Override
+        public void onSucceed() {
+            // 锁成功
+        }
+
+        @Override
+        public void onFailure() {
+            // 锁失败
+        }
+
+        @Override
+        public void onException(Throwable cause) {
+            // 异常
+        }
+    });
+        
+#### 消息队列
+
+    
 
     
 ## License
