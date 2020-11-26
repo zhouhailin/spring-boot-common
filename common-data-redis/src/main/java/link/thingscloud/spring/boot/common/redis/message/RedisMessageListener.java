@@ -1,4 +1,4 @@
-package link.thingscloud.spring.boot.common.redis;
+package link.thingscloud.spring.boot.common.redis.message;
 
 import org.springframework.data.redis.connection.MessageListener;
 

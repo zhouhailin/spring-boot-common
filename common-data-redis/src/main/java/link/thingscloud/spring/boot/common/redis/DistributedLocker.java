@@ -2,6 +2,7 @@ package link.thingscloud.spring.boot.common.redis;
 
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.thread.ThreadUtil;
+import link.thingscloud.spring.boot.common.redis.callback.RedisResponseCallback;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -38,7 +39,7 @@ public class DistributedLocker {
      * 在主从同步时，key未同步成功时，主挂，从为主时，会出现锁两次的情况
      *
      * @param key      a {@link java.lang.String} key值
-     * @param callback a {@link link.thingscloud.spring.boot.common.redis.RedisResponseCallback} 回调函数
+     * @param callback a {@link RedisResponseCallback} 回调函数
      */
     public void tryLock(String key, RedisResponseCallback callback) {
         tryLock(key, expiredTimeoutMillis, callback);
@@ -51,7 +52,7 @@ public class DistributedLocker {
      *
      * @param key                  a {@link java.lang.String} key值
      * @param expiredTimeoutMillis Redis中Key超时时间，单位：毫秒
-     * @param callback             a {@link link.thingscloud.spring.boot.common.redis.RedisResponseCallback} 回调函数
+     * @param callback             a {@link RedisResponseCallback} 回调函数
      */
     public void tryLock(String key, long expiredTimeoutMillis, RedisResponseCallback callback) {
         Boolean lock;
@@ -88,7 +89,7 @@ public class DistributedLocker {
      * 在主从同步时，key未同步成功时，主挂，从为主时，会出现锁两次的情况
      *
      * @param key               a {@link java.lang.String} key值
-     * @param callback          a {@link link.thingscloud.spring.boot.common.redis.RedisResponseCallback} 回调函数
+     * @param callback          a {@link RedisResponseCallback} 回调函数
      */
     public void lock(String key, RedisResponseCallback callback) {
         lock(key, lockTimeoutMillis, expiredTimeoutMillis, callback);
@@ -101,7 +102,7 @@ public class DistributedLocker {
      *
      * @param key               a {@link java.lang.String} key值
      * @param lockTimeoutMillis 尝试锁的超时时间，单位：毫秒
-     * @param callback          a {@link link.thingscloud.spring.boot.common.redis.RedisResponseCallback} 回调函数
+     * @param callback          a {@link RedisResponseCallback} 回调函数
      */
     public void lock(String key, long lockTimeoutMillis, RedisResponseCallback callback) {
         lock(key, lockTimeoutMillis, expiredTimeoutMillis, callback);
@@ -115,7 +116,7 @@ public class DistributedLocker {
      * @param key                  a {@link java.lang.String} key值
      * @param lockTimeoutMillis    尝试锁的超时时间，单位：毫秒
      * @param expiredTimeoutMillis Redis中Key超时时间，单位：毫秒
-     * @param callback             a {@link link.thingscloud.spring.boot.common.redis.RedisResponseCallback} 回调函数
+     * @param callback             a {@link RedisResponseCallback} 回调函数
      */
     public void lock(String key, long lockTimeoutMillis, long expiredTimeoutMillis, RedisResponseCallback callback) {
         Boolean lock;

@@ -1,5 +1,6 @@
 package link.thingscloud.spring.boot.common.redis;
 
+import link.thingscloud.spring.boot.common.redis.message.RedisMessageListener;
 import org.springframework.data.redis.listener.adapter.MessageListenerAdapter;
 
 /**

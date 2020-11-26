@@ -1,7 +1,7 @@
 package link.thingscloud.spring.boot.common.redis.simple;
 
 import link.thingscloud.spring.boot.common.redis.RedisMessageListenerAdapter;
-import link.thingscloud.spring.boot.common.redis.RedisTemplate0;
+import link.thingscloud.spring.boot.common.redis.SimpleRedisTemplate;
 import link.thingscloud.spring.boot.common.util.ExecutorHelper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +21,7 @@ import java.util.concurrent.TimeUnit;
 public class SimpleRedisMessageListener extends RedisMessageListenerAdapter {
 
     @Autowired
-    private RedisTemplate0 redisTemplate0;
+    private SimpleRedisTemplate simpleRedisTemplate;
 
     /**
      * {@inheritDoc}
@@ -44,6 +44,6 @@ public class SimpleRedisMessageListener extends RedisMessageListenerAdapter {
      */
     @PostConstruct
     public void startup() {
-        ExecutorHelper.schedule(() -> redisTemplate0.convertAndSend(getClass().getSimpleName(), "Hello"), 5L, TimeUnit.SECONDS);
+        ExecutorHelper.schedule(() -> simpleRedisTemplate.convertAndSend(getClass().getSimpleName(), "Hello"), 5L, TimeUnit.SECONDS);
     }
 }

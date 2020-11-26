@@ -1,4 +1,4 @@
-package link.thingscloud.spring.boot.common.redis;
+package link.thingscloud.spring.boot.common.redis.callback;
 
 
 import link.thingscloud.spring.boot.common.redis.exception.RedisLockException;

@@ -1,24 +1,31 @@
 package link.thingscloud.spring.boot.common.redis;
 
-import cn.hutool.core.date.DateUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.ListOperations;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Component;
 
 import java.util.concurrent.TimeUnit;
 
-
 /**
- * <p>RedisTemplate0 class.</p>
+ * Redis操作 API
  *
  * @author zhouhailin
- * @version 1.0.0
+ * @version 1.1.0
  */
 @Slf4j
 @Component
-public class RedisTemplate0 extends AbstractRedisTemplate0 {
+public class SimpleRedisTemplate {
+
+    @Autowired
+    private StringRedisTemplate stringRedisTemplate;
+
+    public Boolean setIfAbsent(String key, String value, long timeoutMillis) {
+        return stringRedisTemplate.opsForValue().setIfAbsent(key, value, timeoutMillis, TimeUnit.MILLISECONDS);
+    }
 
     /**
      * 消息队列 - 发布消息
@@ -51,4 +58,5 @@ public class RedisTemplate0 extends AbstractRedisTemplate0 {
     public ListOperations<String, String> opsForList() {
         return stringRedisTemplate.opsForList();
     }
+
 }
