@@ -16,7 +16,7 @@ import java.util.concurrent.TimeUnit;
  */
 @Slf4j
 @Component
-public class DistributedLock {
+public class DistributedLocker {
 
     @Value("${link.thingscloud.redis.distributed.lock.sleepTimeout:10}")
     private long sleepTimeoutMillis;
