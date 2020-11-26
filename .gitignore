@@ -29,3 +29,5 @@ target/
 .vscode/
 
 pom.xml.versionsBackup
+
+common-all/dependency-reduced-pom.xml
