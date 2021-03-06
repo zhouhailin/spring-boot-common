@@ -16,7 +16,7 @@
     </dependency>
     
     implementation 'link.thingscloud:spring-boot-common-all:${spring-boot-common.version}'
-    
+
 ### common-core
 
     <dependency>
@@ -26,7 +26,7 @@
     </dependency>
     
     implementation 'link.thingscloud:spring-boot-common-core:${spring-boot-common.version}'
-    
+
 ### common-aop
 
     <dependency>
@@ -46,7 +46,7 @@
     public String echo(String now) {
         return now;
     }
-    
+
 ### common-data-redis
 
     <dependency>
@@ -62,7 +62,7 @@
     // 极端异常，如有严格要求，建议使用redisson
     // 当主从同步时，锁成功，主挂了，从升为主时，锁key未同步过来，会导致第二次锁也会成功
     @Autowired
-    private DistributedLocker distributedLocker;
+    private SimpleDistributedLocker simpleDistributedLocker;
     
     private RedisResponseCallback callback = new RedisResponseCallback() {
         @Override
@@ -81,25 +81,35 @@
         }
     };
 
-    distributedLocker.tryLock(key, callback);
-    distributedLocker.lock(key, callback);
-        
+    simpleDistributedLocker.tryLock(key, callback);
+    simpleDistributedLocker.lock(key, callback);
+
+#### 分布式并发控制
+
+    @Autowired
+    private SimpleDistributedLimiter simpleDistributedLimiter;
+    // 是否达到并发最大值
+    boolean result = simpleDistributedLimiter.permit(100);
+    // 清楚过期数据，过期时间 60秒
+    simpleDistributedLimiter.clear(60000);
+
 #### 消息队列
 
     基于redis消息队列实现
-    
+
+    实现 RedisMessageListenerAdapter, 通过RedisTopic主叫或者实现其getTopic()方法
+
 ##### 1.使用list数据结构
 
     rpush/lpush : 元素入队列右侧/左侧
     
     lpop/rpop : 元素入队列左侧/右侧
     blpop/brpop : 元素入队列左侧/右侧 - 没有元素则阻塞
-    
+
 #### 动态配置
 
     基于redis发布订阅实现配置动态加载
 
-    
 ## License
 
 [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.html) Copyright (C) Apache Software Foundation

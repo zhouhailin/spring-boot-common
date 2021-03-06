@@ -3,11 +3,10 @@ package link.thingscloud.spring.boot.common.example.data.redis;
 import cn.hutool.core.date.StopWatch;
 import cn.hutool.core.thread.ThreadUtil;
 import link.thingscloud.spring.boot.common.example.CommonTest;
-import link.thingscloud.spring.boot.common.redis.DistributedLocker;
-import link.thingscloud.spring.boot.common.redis.RedisResponseCallback;
+import link.thingscloud.spring.boot.common.redis.SimpleDistributedLocker;
+import link.thingscloud.spring.boot.common.redis.callback.RedisResponseCallback;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 
@@ -15,15 +14,15 @@ import javax.annotation.PostConstruct;
  * @author zhouhailin
  */
 @Slf4j
-@Component
+//@Component
 public class DistributedLockerTest implements CommonTest {
 
     @Autowired
-    private DistributedLocker distributedLocker;
+    private SimpleDistributedLocker simpleDistributedLocker;
 
-    private String key = getClass().getSimpleName();
+    private final String key = getClass().getSimpleName();
 
-    private RedisResponseCallback callback = new RedisResponseCallback() {
+    private final RedisResponseCallback callback = new RedisResponseCallback() {
         @Override
         public void onSucceed() {
             log.info("lock {} onSucceed", key);
@@ -41,34 +40,32 @@ public class DistributedLockerTest implements CommonTest {
     };
 
     private void tryLock() {
-        distributedLocker.tryLock(key, callback);
-        distributedLocker.tryLock(key, callback);
+        simpleDistributedLocker.tryLock(key, callback);
+        simpleDistributedLocker.tryLock(key, callback);
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
         for (int i = 0; i < 10; i++) {
-            distributedLocker.tryLock(key, callback);
+            simpleDistributedLocker.tryLock(key, callback);
         }
         stopWatch.stop();
         System.out.println(stopWatch.prettyPrint());
-        ;
         for (int i = 0; i < 10; i++) {
-            ThreadUtil.execute(() -> distributedLocker.tryLock(key, callback));
+            ThreadUtil.execute(() -> simpleDistributedLocker.tryLock(key, callback));
         }
     }
 
     private void lock() {
-        distributedLocker.lock(key, 1000, callback);
-        distributedLocker.lock(key, 1000, callback);
+        simpleDistributedLocker.lock(key, 1000, callback);
+        simpleDistributedLocker.lock(key, 1000, callback);
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
         for (int i = 0; i < 10; i++) {
-            distributedLocker.lock(key, 1000, callback);
+            simpleDistributedLocker.lock(key, 1000, callback);
         }
         stopWatch.stop();
         System.out.println(stopWatch.prettyPrint());
-        ;
         for (int i = 0; i < 10; i++) {
-            ThreadUtil.execute(() -> distributedLocker.lock(key, 1000, callback));
+            ThreadUtil.execute(() -> simpleDistributedLocker.lock(key, 1000, callback));
         }
     }
 
