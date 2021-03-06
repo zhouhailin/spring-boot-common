@@ -23,7 +23,7 @@ public interface ResponseCallback {
      * @param cause a {@link java.lang.Throwable} object.
      */
     default void onException(Throwable cause) {
-        throw new RuntimeException(cause);
+        cause.printStackTrace();
     }
 
 }
