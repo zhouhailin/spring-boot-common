@@ -2,12 +2,16 @@ package link.thingscloud.spring.boot.common.util;
 
 import lombok.Data;
 import lombok.experimental.Accessors;
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Date;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * @author zhouhailin
@@ -16,38 +20,46 @@ import java.util.Date;
 public class JsonUtilTest {
 
     Person person = new Person().setName("test").setAge(10)
-            .setLocalDate(LocalDate.now())
-            .setLocalTime(LocalTime.now())
-            .setLocalDateTime(LocalDateTime.now())
-            .setDate(new Date(System.currentTimeMillis()));
+            .setLocalDate(LocalDate.now().withYear(2021).withMonth(1).withDayOfMonth(1))
+            .setLocalTime(LocalTime.now().withHour(1).withMinute(1).withSecond(1).withNano(1))
+            .setLocalDateTime(LocalDateTime.now().withYear(2021).withMonth(1).withDayOfMonth(1).withHour(1).withMinute(1).withSecond(1).withNano(1))
+            .setDate(new Date(1614744498139L));
 
-    String json1 = "{\"name\":\"test\",\"age\":10,\"localDateTime\":\"2021-03-03 12:08:18.139\",\"date\":1614744498139}";
-    String json2 = "[{\"name\":\"mkyong\", \"age\":37}, {\"name\":\"fong\", \"age\":38}]";
 
     @Test
     public void toJSONString() {
-        System.out.println(JsonUtil.toJSONString(person));
+        assertEquals(JsonUtil.toJSONString(person), "{\"name\":\"test\",\"age\":10,\"localDateTime\":\"2021-01-01 01:01:01.000\",\"localDate\":\"2021-01-01\",\"localTime\":\"01:01:01.000\",\"date\":1614744498139}");
     }
 
     @Test
     public void writeValue() {
-        System.out.println(JsonUtil.writeValue(person));
+        assertEquals(JsonUtil.writeValue(person), "{\"name\":\"test\",\"age\":10,\"localDateTime\":\"2021-01-01 01:01:01.000\",\"localDate\":\"2021-01-01\",\"localTime\":\"01:01:01.000\",\"date\":1614744498139}");
     }
 
     @Test
     public void parseObject() {
-        System.out.println(JsonUtil.parseObject("{\"name\":\"test\",\"age\":10,\"localDateTime\":\"2021-03-03 12:29:34.849\",\"localDate\":\"2021-03-03\",\"localTime\":\"12:29:34.849\",\"date\":1614745774850}", Person.class));
+        Person person = JsonUtil.parseObject("{\"name\":\"test\",\"age\":10,\"localDateTime\":\"2021-03-03 12:29:34.849\",\"localDate\":\"2021-03-03\",\"localTime\":\"12:29:34.849\",\"date\":1614745774850}", Person.class);
+        assertNotNull(person);
+        assertEquals(person.getName(), "test");
+        assertEquals((long) person.getAge(), 10L);
+        assertEquals(person.getLocalDateTime().getHour(), 12L);
     }
 
     @Test
     public void readValue() {
-        System.out.println(JsonUtil.readValue(json1, Person.class));
+        String json1 = "{\"name\":\"test\",\"age\":10,\"localDateTime\":\"2021-03-03 12:08:18.139\",\"date\":1614744498139}";
+        Person person = JsonUtil.readValue(json1, Person.class);
+        assertNotNull(person);
+        assertEquals(person.getName(), "test");
+        assertEquals((long) person.getAge(), 10L);
+        assertEquals(person.getLocalDateTime().getHour(), 12L);
     }
 
     @Test
     public void parseArray() {
-        System.out.println(JsonUtil.parseArray(json2));
-        System.out.println(JsonUtil.parseArray("[]"));
+        String json2 = "[{\"name\":\"mkyong\", \"age\":37}, {\"name\":\"fong\", \"age\":38}]";
+        assertEquals(JsonUtil.parseArray(json2).size(), 2);
+        Assert.assertTrue(JsonUtil.parseArray("[]").isEmpty());
     }
 
 

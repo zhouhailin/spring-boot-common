@@ -1,5 +1,7 @@
 package link.thingscloud.spring.boot.common.util;
 
+import java.time.Instant;
+
 /**
  * @author zhouhailin
  * @since 1.1.0
@@ -7,11 +9,11 @@ package link.thingscloud.spring.boot.common.util;
 public class SystemClock {
 
     public static long now() {
-        return System.currentTimeMillis();
+        return Instant.now().toEpochMilli();
     }
 
     public static String strNow() {
-        return String.valueOf(System.currentTimeMillis());
+        return String.valueOf(Instant.now().toEpochMilli());
     }
 
     private SystemClock() {
