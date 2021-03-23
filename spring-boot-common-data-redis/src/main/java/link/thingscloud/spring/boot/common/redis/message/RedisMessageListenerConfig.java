@@ -40,6 +40,9 @@ public class RedisMessageListenerConfig {
             String topic = listener.getTopic();
             if (topic == null) {
                 RedisTopic redisTopic = listener.getClass().getAnnotation(RedisTopic.class);
+                if (redisTopic == null) {
+                    redisTopic = listener.getClass().getSuperclass().getAnnotation(RedisTopic.class);
+                }
                 if (redisTopic != null) {
                     topic = redisTopic.value();
                 }

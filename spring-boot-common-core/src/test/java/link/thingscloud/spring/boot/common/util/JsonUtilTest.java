@@ -25,12 +25,6 @@ public class JsonUtilTest {
             .setLocalDateTime(LocalDateTime.now().withYear(2021).withMonth(1).withDayOfMonth(1).withHour(1).withMinute(1).withSecond(1).withNano(1))
             .setDate(new Date(1614744498139L));
 
-
-    @Test
-    public void toJSONString() {
-        assertEquals(JsonUtil.toJSONString(person), "{\"name\":\"test\",\"age\":10,\"localDateTime\":\"2021-01-01 01:01:01.000\",\"localDate\":\"2021-01-01\",\"localTime\":\"01:01:01.000\",\"date\":1614744498139}");
-    }
-
     @Test
     public void writeValue() {
         assertEquals(JsonUtil.writeValue(person), "{\"name\":\"test\",\"age\":10,\"localDateTime\":\"2021-01-01 01:01:01.000\",\"localDate\":\"2021-01-01\",\"localTime\":\"01:01:01.000\",\"date\":1614744498139}");

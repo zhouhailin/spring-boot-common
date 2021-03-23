@@ -36,14 +36,13 @@ public class JsonUtil {
         MAPPER.registerModule(javaTimeModule);
     }
 
-
     /**
      * 对象转JSON字符串
      *
      * @param object 对象
      * @return JSON字符串
      */
-    public static String toJSONString(Object object) {
+    public static String toString(Object object) {
         return writeValue(object);
     }
 
