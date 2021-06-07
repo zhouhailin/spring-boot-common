@@ -34,6 +34,7 @@ public class JsonUtil {
         registerLocalTime(javaTimeModule);
         registerLocalDateTime(javaTimeModule);
         MAPPER.registerModule(javaTimeModule);
+        MAPPER.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     }
 
     /**
