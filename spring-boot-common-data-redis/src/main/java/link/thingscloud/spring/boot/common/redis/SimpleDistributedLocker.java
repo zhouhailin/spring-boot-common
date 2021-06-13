@@ -8,6 +8,7 @@ import link.thingscloud.spring.boot.common.util.ExecutorHelper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.data.redis.core.script.RedisScript;
@@ -25,6 +26,7 @@ import java.util.concurrent.TimeUnit;
  */
 @Slf4j
 @Component
+@ConditionalOnClass(StringRedisTemplate.class)
 public class SimpleDistributedLocker {
 
     @Value("${simple.distributed.locker.sleepTimeout:10}")

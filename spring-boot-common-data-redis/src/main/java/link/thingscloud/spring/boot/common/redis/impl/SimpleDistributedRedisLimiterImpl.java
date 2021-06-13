@@ -5,6 +5,7 @@ import link.thingscloud.spring.boot.common.redis.DistributedRedisLimiter;
 import link.thingscloud.spring.boot.common.util.SystemClock;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.data.redis.core.script.RedisScript;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Component;
  */
 @Slf4j
 @Component
+@ConditionalOnClass(StringRedisTemplate.class)
 public class SimpleDistributedRedisLimiterImpl implements DistributedRedisLimiter {
 
     @Autowired

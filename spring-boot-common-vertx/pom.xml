@@ -9,8 +9,8 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>spring-boot-common-data-redis</artifactId>
-    <name>spring-boot-common-data-redis-${project.version}</name>
+    <artifactId>spring-boot-common-vertx</artifactId>
+    <name>${project.artifactId}-${project.version}</name>
 
     <dependencies>
         <dependency>
@@ -19,8 +19,9 @@
         </dependency>
 
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-redis</artifactId>
+            <groupId>io.vertx</groupId>
+            <artifactId>vertx-core</artifactId>
         </dependency>
     </dependencies>
+
 </project>

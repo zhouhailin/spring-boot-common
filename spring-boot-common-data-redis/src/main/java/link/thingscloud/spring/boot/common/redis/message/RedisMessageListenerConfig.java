@@ -3,9 +3,11 @@ package link.thingscloud.spring.boot.common.redis.message;
 import link.thingscloud.spring.boot.common.redis.annotation.RedisTopic;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.listener.PatternTopic;
 import org.springframework.data.redis.listener.RedisMessageListenerContainer;
 
@@ -20,6 +22,7 @@ import java.util.List;
  */
 @Slf4j
 @Configuration
+@ConditionalOnClass(StringRedisTemplate.class)
 public class RedisMessageListenerConfig {
 
     @Autowired(required = false)

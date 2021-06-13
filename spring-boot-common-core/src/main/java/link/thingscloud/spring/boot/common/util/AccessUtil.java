@@ -25,6 +25,10 @@ public class AccessUtil {
         return DigestUtil.md5Hex(keyId + timestamp + keySecret);
     }
 
+    public static HttpHeaders newHttpHeader(String keyId, String keySecret) {
+        return newHttpHeader(keyId, keySecret, SystemClock.strNow());
+    }
+
     public static HttpHeaders newHttpHeader(String keyId, String keySecret, long timestamp) {
         return newHttpHeader(keyId, keySecret, String.valueOf(timestamp));
     }
